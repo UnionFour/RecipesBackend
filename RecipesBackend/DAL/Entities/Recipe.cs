@@ -57,7 +57,7 @@ namespace RecipesBackend.DAL.Entities
         //TODO
         // Need to produce Entities below
         public List<Instruction> AnalyzedInstructions { get; set; }
-        public object[] Cuisines { get; set; }
+        public string[] Cuisines { get; set; }
         public string[] DishTypes { get; set; }
         public string[] Diets { get; set; }
         public string[] Occasions { get; set; }
