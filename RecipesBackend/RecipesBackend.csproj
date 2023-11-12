@@ -16,7 +16,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DAL\DTO\" />
+      <Compile Remove="DAL\DTO\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="DAL\DTO\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="DAL\DTO\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="DAL\DTO\**" />
     </ItemGroup>
 
 </Project>

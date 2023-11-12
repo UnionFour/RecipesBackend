@@ -1,28 +1,36 @@
-﻿using RecipesBackend.DAL.Entities.ServiceEntities;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecipesBackend.DAL.Entities
 {
-    public class Ingredient
-    {
-        // General Info
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string NameClean { get; set; }
-        public string Original { get; set; }
-        public string OriginalName { get; set; }
+	[BsonIgnoreExtraElements]
+	public class Ingredient
+	{
+		// General Info
+		public int Id { get; set; }
 
+		[BsonElement("nameClean")]
+		public LocalizedString LocalizedName { get; set; } = new();
 
-        // Some WTF fields
-        public string Aisle { get; set; }
-        public string Photo { get; set; }
-        public string Consistency { get; set; }
+		[BsonIgnore]
+		public string Name => LocalizedName.Rus;
 
+		// to get image "https://spoonacular.com/cdn/ingredients_100x100/" + image
+		public string Image { get; set; } = "";
 
-        public double Amount { get; set; }
-        public string AmountUnit { get; set; }
+		public double? Amount { get; set; } = null;
 
+		[BsonElement("unit")]
+		public LocalizedString? LocalizedUnit { get; set; } = null;
 
-        public List<string> Meta { get; set; }
-        public List<Measure> Measures { get; set; }
-    }
+		[BsonIgnore]
+		public string? Unit => LocalizedUnit?.Rus;
+
+		[BsonElement("measures")]
+		public object? MeasureDocument { get; set; } = null;
+
+		[BsonIgnore]
+		public Measure? Measure => BsonSerializer.Deserialize<Measure?>(BsonDocument.Create(MeasureDocument)["metric"].AsBsonDocument);
+	}
 }

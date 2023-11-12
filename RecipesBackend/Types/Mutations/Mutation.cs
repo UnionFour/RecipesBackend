@@ -1,7 +1,6 @@
 ﻿namespace RecipesBackend.Types.Mutations;
 
-[MutationType]
+// [MutationType]
 public class Mutation
 {
-	
 }
