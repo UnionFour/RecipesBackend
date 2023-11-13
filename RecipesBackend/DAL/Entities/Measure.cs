@@ -8,15 +8,9 @@ namespace RecipesBackend.DAL.Entities
 		public double Amount { get; set; }
 
 		[BsonElement("unitShort")]
-		public LocalizedString LocalizedUnitShort { get; set; } = new();
-
-		[BsonIgnore]
-		public string UnitShort => LocalizedUnitShort.Rus;
+		public LocalizedString UnitShort { get; set; } = new();
 
 		[BsonElement("unitLong")]
-		public LocalizedString LocalizedUnitLong { get; set; } = new();
-
-		[BsonIgnore]
-		public string UnitLong => LocalizedUnitLong.Rus;
+		public LocalizedString UnitLong { get; set; } = new();
 	}
 }

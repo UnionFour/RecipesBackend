@@ -8,10 +8,7 @@ namespace RecipesBackend.DAL.Entities
 		public int Id { get; set; }
 
 		[BsonElement("name")]
-		public LocalizedString LocalizedName { get; set; } = new();
-
-		[BsonIgnore]
-		public string Name => LocalizedName.Rus;
+		public LocalizedString Name { get; set; } = new();
 
 		public string Image { get; set; } = "";
 	}

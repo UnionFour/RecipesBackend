@@ -6,11 +6,8 @@ namespace RecipesBackend.DAL.Entities
     public class Instruction
     {
 	    [BsonElement("step")]
-        public LocalizedString LocalizedName { get; set; } = new();
+        public LocalizedString Name { get; set; } = new();
 
-        [BsonIgnore]
-        public string Name => LocalizedName.Rus;
-        
         public List<Step> Steps { get; set; } = new();
     }
 }

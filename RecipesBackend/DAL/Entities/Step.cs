@@ -10,10 +10,7 @@ namespace RecipesBackend.DAL.Entities
 		public List<Ingredient> Ingredients { get; set; } = new();
 
 		[BsonElement("step")]
-		public LocalizedString LocalizedDescription { get; set; } = new();
-
-		[BsonIgnore]
-		public string Description => LocalizedDescription.Rus;
+		public LocalizedString Description { get; set; } = new();
 
 		public List<Equipment> Equipments { get; set; } = new();
 

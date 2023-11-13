@@ -8,9 +8,6 @@ namespace RecipesBackend.DAL.Entities
 		public int Number { get; set; }
 
 		[BsonElement("unit")]
-		public LocalizedString LocalizedUnit { get; set; } = new();
-
-		[BsonIgnore]
-		public string Unit => LocalizedUnit.Rus;
+		public LocalizedString Unit { get; set; } = new();
 	}
 }

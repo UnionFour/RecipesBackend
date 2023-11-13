@@ -10,10 +10,7 @@ namespace RecipesBackend.DAL.Entities
 		public string Id { get; set; }
 
 		[BsonElement("title")]
-		public LocalizedString LocalizedTitle { get; set; } = new();
-
-		[BsonIgnore]
-		public string Title => LocalizedTitle.Rus;
+		public LocalizedString Title { get; set; } = new();
 
 		public string Image { get; set; } = "";
 		public string ImageType { get; set; } = "";
@@ -26,8 +23,6 @@ namespace RecipesBackend.DAL.Entities
 		public bool VeryHealthy { get; set; }
 		public bool Cheap { get; set; }
 		public bool VeryPopular { get; set; }
-		public bool Sustainable { get; set; }
-		public bool LowFodmap { get; set; }
 
 		// CookingTime (MB TimeSpan instead double)
 		public double ReadyInMinutes { get; set; }
@@ -45,7 +40,7 @@ namespace RecipesBackend.DAL.Entities
 		public int Servings { get; set; }
 		public int WeightWatcherSmartPoints { get; set; }
 
-		public Money PricePerServing { get; set; }
+		public Money PricePerServing { get; set; } = new();
 
 		// License
 		public string License { get; set; } = "";
@@ -55,7 +50,9 @@ namespace RecipesBackend.DAL.Entities
 
 		//TODO
 		// Need to produce Entities below
-		public List<Instruction> AnalyzedInstructions { get; set; }
+		[BsonElement("analyzedInstructions")]
+		public List<Instruction> Instructions { get; set; } = new();
+
 		// public List<string> Cuisines { get; set; }
 	}
 }
