@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton(sp =>
 {
-	const string connectionString = "mongodb://localhost:27017";
+	var connectionString = builder.Configuration.GetConnectionString("Mongo");
 	var mongoConnectionUrl = new MongoUrl(connectionString);
 	var mongoClientSettings = MongoClientSettings.FromUrl(mongoConnectionUrl);
 
