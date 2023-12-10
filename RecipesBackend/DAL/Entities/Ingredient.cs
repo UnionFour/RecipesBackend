@@ -12,7 +12,7 @@ namespace RecipesBackend.DAL.Entities
 		public LocalizedString? Name { get; set; } = new();
 
 		// to get image "https://spoonacular.com/cdn/ingredients_100x100/" + image
-		public string Image { get; set; } = "";
+		public string? Image { get; set; } = "";
 
 		public double? Amount { get; set; } = null;
 

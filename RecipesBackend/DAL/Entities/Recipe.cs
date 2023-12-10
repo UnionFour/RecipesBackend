@@ -12,7 +12,7 @@ namespace RecipesBackend.DAL.Entities
 		[BsonElement("title")]
 		public LocalizedString Title { get; set; } = new();
 
-		public string Image { get; set; } = "";
+		public string? Image { get; set; } = "";
 		public string ImageType { get; set; } = "";
 
 		// Tags
@@ -31,7 +31,7 @@ namespace RecipesBackend.DAL.Entities
 
 		// Ingredients
 		[BsonElement("extendedIngredients")]
-		public List<Ingredient> Ingredients { get; set; } = new();
+		public List<Ingredient>? Ingredients { get; set; } = new();
 
 		// Extra Info
 		public int AggregateLikes { get; set; }

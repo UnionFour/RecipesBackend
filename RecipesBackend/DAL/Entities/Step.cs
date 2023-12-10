@@ -7,7 +7,7 @@ namespace RecipesBackend.DAL.Entities
 	{
 		public int Number { get; set; }
 
-		public List<Ingredient> Ingredients { get; set; } = new();
+		public List<Ingredient>? Ingredients { get; set; } = new();
 
 		[BsonElement("step")]
 		public LocalizedString Description { get; set; } = new();
