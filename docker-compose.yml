@@ -1,26 +1,28 @@
 ﻿services:
   backend:
+    image: simondub/recipesbackend:dev
     build:
       context: .
       dockerfile: RecipesBackend/Dockerfile
     ports:
-      - 8080:80
+      - 80:80
     depends_on:
       - db
-    develop:
-      watch:
-        - action: rebuild
     environment:
       - "ConnectionStrings__Mongo=mongodb://db:27017"
-  
+        
   db:
     image: mongodb/mongodb-community-server:6.0-ubi8
     ports:
-      - 27018:27017
+      - 27019:27017
     expose:
       - 27017
     volumes:
       - data:/data/db
+      - configdb:/data/configdb
 
 volumes: 
   data:
+    external: true
+  configdb:
+    external: true
