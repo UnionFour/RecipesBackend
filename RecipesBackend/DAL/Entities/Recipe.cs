@@ -54,5 +54,12 @@ namespace RecipesBackend.DAL.Entities
 		public List<Instruction> Instructions { get; set; } = new();
 
 		// public List<string> Cuisines { get; set; }
+		
+		// TODO
+		// Typo in calories
+		public double Callories { get; set; }
+		public string CalloriesUnits { get; set; }
+		
+		public Nutrition Nutrition { get; set; }
 	}
 }
