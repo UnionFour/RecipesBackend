@@ -13,4 +13,16 @@ public class Query
 	// ReSharper disable once UnusedMember.Global
 	public IExecutable<Recipe> GetRecipes([Service] IMongoCollection<Recipe> collection) =>
 		collection.AsExecutable();
+
+	[UseFiltering]
+	// ReSharper disable once UnusedMember.Global
+	public IExecutable<IngredientCollection> GetIngredients([Service] IMongoCollection<IngredientCollection> collection)
+	{
+		var sortDefinition = Builders<IngredientCollection>.Sort.Descending(ingredientCollection => ingredientCollection.Count);
+		var filterDefinition = Builders<IngredientCollection>.Filter.Empty;
+
+		return collection.Find(filterDefinition, new FindOptions())
+			.Sort(sortDefinition)
+			.AsExecutable();
+	}
 }
