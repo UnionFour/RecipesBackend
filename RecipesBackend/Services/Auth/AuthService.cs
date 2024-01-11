@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 
-namespace Auth
+namespace RecipesBackend.Services.Auth
 {
     public class AuthService : IAuthService
     {

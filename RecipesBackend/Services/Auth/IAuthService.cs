@@ -1,4 +1,4 @@
-﻿namespace Auth
+﻿namespace RecipesBackend.Services.Auth
 {
     public interface IAuthService
     {
