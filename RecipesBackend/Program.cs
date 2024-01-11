@@ -1,3 +1,6 @@
+using Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -38,18 +41,49 @@ ConventionRegistry.Register("camel case", pack, t => true);
 var client = new MongoClient(mongoClientSettings);
 var database = client.GetDatabase("Recipes");
 
+// authorization
+builder.Services.AddHttpClient();
+builder.Services.AddGraphQLServer();
+builder.Services.AddAuthorization();
+
+
+builder.Services.AddDataProtection();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidIssuer = AuthOptions.Issuer,
+            ValidateAudience = true,
+            ValidAudience = AuthOptions.Audience,
+            ValidateLifetime = true,
+            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true
+        };
+    });
+
 builder.Services.AddSingleton(sp => database.GetCollection<Recipe>("Recipes"));
 builder.Services.AddSingleton(sp => database.GetCollection<IngredientCollection>("Ingredients"));
 
 builder.Services
 	.AddGraphQLServer()
+	.AddAuthorization()
+	.AddProjections()
 	.AddTypes()
-	.AddFiltering<CustomFilteringConvention>()	
-	.AddMongoDbSorting()
+	.AddFiltering<CustomFilteringConvention>()
+	.AddSorting()
+    .AddMutationConventions()
+    .AddMongoDbSorting()
 	.AddMongoDbProjections()
 	.AddMongoDbPagingProviders();
 
 var app = builder.Build();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGraphQL();
 
