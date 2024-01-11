@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using RecipesBackend.DAL.Entities;
 
 namespace RecipesBackend.Services.Auth
 {
@@ -13,41 +14,33 @@ namespace RecipesBackend.Services.Auth
         private ITimeLimitedDataProtector TimeLimitedDataProtector { get; }
 
         public AuthService(IOptions<AuthOptions> authOptions,
-            IDataProtectionProvider dataProtectionProvider,
-            FirstCusrHelpAppContext dbContext)
+            IDataProtectionProvider dataProtectionProvider)
         {
             AuthOptions = authOptions.Value;
             TimeLimitedDataProtector = dataProtectionProvider
                 .CreateProtector("auth")
                 .ToTimeLimitedDataProtector();
-
-            _userRepository = userRepository;
-            //DbContext = dbContext;
         }
 
-        public string RegisterUser(UserInput input)
+        public string RegisterUser(UserAuth input, [Service] IMongoCollection<User> users)
         {
-            // need access to user collection
-            //var user = DbContext.Users?.FirstOrDefault(u => u.Email == input.Email);
+            var filter =  new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
+            var user = users.Find(filter).FirstOrDefault();
             if (user == null)
-                _userRepository.CreateUser(DbContext, input.Email, input.Password);
+                users.InsertOne(new User { Email = input.Email, HashPassword = input.Email});
             else
                 throw new Exception(message: "user with such Email is already exists");
 
-            return AuthorizeUser(new UserInput()
-            {
-                Email = input.Email,
-                Password = input.Password
-            });
+            return AuthorizeUser(new UserAuth() { Email = input.Email, Password = input.Password }, users);
         }
 
-        public string AuthorizeUser(UserInput input)
+        public string AuthorizeUser(UserAuth input, [Service] IMongoCollection<User> users)
         {
-            // need access to user collection
-            //var user = DbContext.Users?.FirstOrDefault(u => u.Email == input.Email);
+            var filter = new BsonDocument { { "email", $"{input.Email}" }, { "passHash", true } };
+            var user = users.Find(filter).FirstOrDefault();
 
             if (user == null) throw new Exception(message: "User is not registrated");
-            if (user.Password != input.Password) throw new Exception(message: "wrong Password or Email");
+            if (user.HashPassword != input.Password) throw new Exception(message: "wrong Password or Email");
 
             var handler = new JsonWebTokenHandler();
             var accessToken = handler.CreateToken(new SecurityTokenDescriptor
