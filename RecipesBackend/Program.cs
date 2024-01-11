@@ -1,4 +1,3 @@
-using Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
@@ -7,6 +6,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 using RecipesBackend;
 using RecipesBackend.DAL.Entities;
+using RecipesBackend.Services.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,10 +42,6 @@ var client = new MongoClient(mongoClientSettings);
 var database = client.GetDatabase("Recipes");
 
 // authorization
-builder.Services.AddHttpClient();
-builder.Services.AddGraphQLServer();
-builder.Services.AddAuthorization();
-
 var authSection = builder.Configuration.GetSection("Auth");
 var authOptions = authSection.Get<AuthOptions>();
 
@@ -66,6 +62,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
+
+builder.Services.AddHttpClient();
+builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton(sp => database.GetCollection<Recipe>("Recipes"));
 builder.Services.AddSingleton(sp => database.GetCollection<IngredientCollection>("Ingredients"));

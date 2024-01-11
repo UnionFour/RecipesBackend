@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Auth
+namespace RecipesBackend.Services.Auth
 {
     public class AuthOptions
     {
