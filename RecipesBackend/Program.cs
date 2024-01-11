@@ -46,19 +46,23 @@ builder.Services.AddHttpClient();
 builder.Services.AddGraphQLServer();
 builder.Services.AddAuthorization();
 
+var authSection = builder.Configuration.GetSection("Auth");
+var authOptions = authSection.Get<AuthOptions>();
+
+builder.Services.Configure<AuthOptions>(authSection);
 
 builder.Services.AddDataProtection();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = AuthOptions.Issuer,
+            ValidIssuer = authOptions?.Issuer,
             ValidateAudience = true,
-            ValidAudience = AuthOptions.Audience,
+            ValidAudience = authOptions?.Audience,
             ValidateLifetime = true,
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            IssuerSigningKey = authOptions?.GetSymmetricSecurityKey(),
             ValidateIssuerSigningKey = true
         };
     });

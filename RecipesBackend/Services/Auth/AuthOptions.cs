@@ -1,16 +1,17 @@
 ﻿using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Auth
 {
     public class AuthOptions
     {
-        public const string Issuer = "https://localhost:7207";
+        public string Issuer { get; set; } = "";
 
-        public const string Audience = "https://localhost:7207";
+        public string Audience { get; set; } = "";
 
-        const string Key = "this is super super secret key!!!";
+        public string Key { get; set; } = "";
 
-        public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+        public SymmetricSecurityKey GetSymmetricSecurityKey() =>
             new(Encoding.UTF8.GetBytes(Key));
     }
 }
