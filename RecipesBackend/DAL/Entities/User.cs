@@ -9,9 +9,11 @@ namespace RecipesBackend.DAL.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public int Id { get; set; }
 
-        public string NickName { get; set; }
         public string Email { get; set; }
         public string HashPassword { get; set; }
+
+        public List<int> LikedRecipes { get; set; }
+        public List<int> CreatedRecipes { get; set; }
 
         public bool IsAdmin { get; set; }
     }
