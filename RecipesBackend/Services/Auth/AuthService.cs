@@ -29,7 +29,7 @@ namespace RecipesBackend.Services.Auth
 
         public string RegisterUser(UserAuth input)
         {
-            var filter =  new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
+            var filter = new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
             var user = Users.Find(filter).FirstOrDefault();
             if (user == null)
                 Users.InsertOne(new User(maxUserId++) { Email = input.Email, HashPassword = input.Email});
