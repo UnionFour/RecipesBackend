@@ -3,11 +3,13 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecipesBackend.DAL.Entities
 {
-    public class User
+    public class User : Entity<int>
     {
+        public User(int id) : base(id) { }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public new int? Id { get; set; }
 
         public string Email { get; set; }
         public string HashPassword { get; set; }

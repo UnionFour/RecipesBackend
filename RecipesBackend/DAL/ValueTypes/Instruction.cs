@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecipesBackend.DAL.Entities
+namespace RecipesBackend.DAL.ValueTypes
 {
-	[BsonIgnoreExtraElements]
+    [BsonIgnoreExtraElements]
     public class Instruction
     {
-	    [BsonElement("step")]
+        [BsonElement("step")]
         public LocalizedString Name { get; set; } = new();
 
         public List<Step> Steps { get; set; } = new();

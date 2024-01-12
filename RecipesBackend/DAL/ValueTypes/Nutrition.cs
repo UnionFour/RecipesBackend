@@ -1,9 +1,9 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecipesBackend.DAL.Entities;
+namespace RecipesBackend.DAL.ValueTypes;
 
 [BsonIgnoreExtraElements]
 public class Nutrition
 {
-	public CaloricBreakdown CaloricBreakdown { get; set; }
+    public CaloricBreakdown CaloricBreakdown { get; set; }
 }

@@ -1,13 +1,17 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using RecipesBackend.DAL.ValueTypes;
 
 namespace RecipesBackend.DAL.Entities
 {
-	[BsonIgnoreExtraElements]
-	public class Recipe
+    [BsonIgnoreExtraElements]
+	public class Recipe : Entity<string>
 	{
-		[BsonRepresentation(BsonType.ObjectId)]
-		public string? Id { get; set; }
+        public Recipe(string id) : base(id) { }
+
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public new string? Id { get; set; }
 
 		[BsonElement("title")]
 		public LocalizedString Title { get; set; } = new();

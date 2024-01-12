@@ -1,14 +1,18 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecipesBackend.DAL.Entities
 {
 	[BsonIgnoreExtraElements]
-	public class Ingredient
+	public class Ingredient : Entity<int>
 	{
-		// General Info
-		public int Id { get; set; }
+        public Ingredient(int id) : base(id) { }
 
-		[BsonElement("nameClean")]
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public new string? Id { get; set; }
+
+        [BsonElement("nameClean")]
 		public LocalizedString? Name { get; set; } = new();
 
 		// to get image "https://spoonacular.com/cdn/ingredients_100x100/" + image
