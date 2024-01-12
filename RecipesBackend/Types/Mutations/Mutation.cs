@@ -1,13 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using RecipesBackend.DAL.Entities;
+
+using MongoDB.Driver;
+using RecipesBackend.DAL.Entities;
+using RecipesBackend.Services.Auth;
 
 namespace RecipesBackend.Types.Mutations;
 
 [MutationType]
 public class Mutation
 {
+    public string RegisterUser(
+        [Service] IAuthService authService,
+        UserAuth input) => authService.RegisterUser(input);
+
+    public string AuthorizeUser(
+        [Service] IAuthService authService,
+        UserAuth input) => authService.AuthorizeUser(input);
 	// TODO: Реализовать AddRecipe
 	// - Добавление рецепта, проверка на имя (если уже такое существует)
 	// -	- Добавление нового id
