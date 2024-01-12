@@ -3,12 +3,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecipesBackend.DAL.Entities;
 
-public class IngredientCollection : Entity<string>
+public class IngredientCollection
 {
-    public IngredientCollection(string id) : base(id) { }
-
     [BsonId]
-	[BsonRepresentation(BsonType.ObjectId)]
-	public new string? Id { get; set; }
-	public int Count { get; set; }
+	public string? Id { get; set; }
+
+	public int Count { get; set; } = 1;
 }

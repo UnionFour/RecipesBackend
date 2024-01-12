@@ -4,13 +4,11 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace RecipesBackend.DAL.Entities
 {
 	[BsonIgnoreExtraElements]
-	public class Ingredient : Entity<int>
+	public class Ingredient
 	{
-        public Ingredient(int id) : base(id) { }
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public new string? Id { get; set; }
+        public string? Id { get; set; }
 
         [BsonElement("nameClean")]
 		public LocalizedString? Name { get; set; } = new();

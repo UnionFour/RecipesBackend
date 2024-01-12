@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
 using System.Text;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecipesBackend.DAL.ValueTypes
 {
+    [BsonIgnoreExtraElements]
     public class ValueType<T>
     {
         private static readonly List<PropertyInfo> propertyList;

@@ -4,10 +4,8 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace RecipesBackend.DAL.Entities
 {
 	[BsonIgnoreExtraElements]
-	public class Equipment : Entity<int>
+	public class Equipment
 	{
-        public Equipment(int id) : base(id) { }
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public new int? Id { get; set; }

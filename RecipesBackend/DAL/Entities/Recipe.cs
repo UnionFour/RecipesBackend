@@ -5,10 +5,8 @@ using RecipesBackend.DAL.ValueTypes;
 namespace RecipesBackend.DAL.Entities
 {
     [BsonIgnoreExtraElements]
-	public class Recipe : Entity<string>
+	public class Recipe
 	{
-        public Recipe(string id) : base(id) { }
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public new string? Id { get; set; }
