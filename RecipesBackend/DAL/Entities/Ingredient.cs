@@ -6,7 +6,7 @@ namespace RecipesBackend.DAL.Entities
 	public class Ingredient
 	{
 		// General Info
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		[BsonElement("nameClean")]
 		public LocalizedString? Name { get; set; } = new();
