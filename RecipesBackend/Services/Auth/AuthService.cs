@@ -22,7 +22,7 @@ namespace RecipesBackend.Services.Auth
                 .ToTimeLimitedDataProtector();
         }
 
-        public string RegisterUser(UserAuth input, [Service] IMongoCollection<User> users)
+        public string RegisterUser(UserAuth input, IMongoCollection<User> users)
         {
             var filter =  new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
             var user = users.Find(filter).FirstOrDefault();
@@ -34,7 +34,7 @@ namespace RecipesBackend.Services.Auth
             return AuthorizeUser(new UserAuth() { Email = input.Email, Password = input.Password }, users);
         }
 
-        public string AuthorizeUser(UserAuth input, [Service] IMongoCollection<User> users)
+        public string AuthorizeUser(UserAuth input, IMongoCollection<User> users)
         {
             var filter = new BsonDocument { { "email", $"{input.Email}" }, { "passHash", true } };
             var user = users.Find(filter).FirstOrDefault();
