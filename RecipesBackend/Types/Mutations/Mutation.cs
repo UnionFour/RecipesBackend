@@ -8,12 +8,10 @@ namespace RecipesBackend.Types.Mutations;
 public class Mutation
 {
     public string RegisterUser(
-        [Service] IAuthService authService, 
-        [Service] IMongoCollection<User> users,
-        UserAuth input) => authService.RegisterUser(input, users);
+        [Service] IAuthService authService,
+        UserAuth input) => authService.RegisterUser(input);
 
     public string AuthorizeUser(
         [Service] IAuthService authService,
-        [Service] IMongoCollection<User> users,
-        UserAuth input) => authService.AuthorizeUser(input, users);
+        UserAuth input) => authService.AuthorizeUser(input);
 }

@@ -12,32 +12,35 @@ namespace RecipesBackend.Services.Auth
     {
         private AuthOptions AuthOptions { get; }
         private ITimeLimitedDataProtector TimeLimitedDataProtector { get; }
+        private IMongoCollection<User> Users;
 
         public AuthService(IOptions<AuthOptions> authOptions,
-            IDataProtectionProvider dataProtectionProvider)
+            IDataProtectionProvider dataProtectionProvider,
+            [Service] IMongoCollection<User> users)
         {
             AuthOptions = authOptions.Value;
+            Users = users;
             TimeLimitedDataProtector = dataProtectionProvider
                 .CreateProtector("auth")
                 .ToTimeLimitedDataProtector();
         }
 
-        public string RegisterUser(UserAuth input, IMongoCollection<User> users)
+        public string RegisterUser(UserAuth input)
         {
             var filter =  new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
-            var user = users.Find(filter).FirstOrDefault();
+            var user = Users.Find(filter).FirstOrDefault();
             if (user == null)
-                users.InsertOne(new User { Email = input.Email, HashPassword = input.Email});
+                Users.InsertOne(new User { Email = input.Email, HashPassword = input.Email});
             else
                 throw new Exception(message: "user with such Email is already exists");
 
-            return AuthorizeUser(new UserAuth() { Email = input.Email, Password = input.Password }, users);
+            return AuthorizeUser(new UserAuth() { Email = input.Email, Password = input.Password });
         }
 
-        public string AuthorizeUser(UserAuth input, IMongoCollection<User> users)
+        public string AuthorizeUser(UserAuth input)
         {
             var filter = new BsonDocument { { "email", $"{input.Email}" }, { "passHash", true } };
-            var user = users.Find(filter).FirstOrDefault();
+            var user = Users.Find(filter).FirstOrDefault();
 
             if (user == null) throw new Exception(message: "User is not registrated");
             if (user.HashPassword != input.Password) throw new Exception(message: "wrong Password or Email");
