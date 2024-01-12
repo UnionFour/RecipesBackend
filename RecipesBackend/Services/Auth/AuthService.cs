@@ -10,6 +10,7 @@ namespace RecipesBackend.Services.Auth
 {
     public class AuthService : IAuthService
     {
+        private int maxUserId;
         private AuthOptions AuthOptions { get; }
         private ITimeLimitedDataProtector TimeLimitedDataProtector { get; }
         private IMongoCollection<User> Users;
@@ -18,6 +19,7 @@ namespace RecipesBackend.Services.Auth
             IDataProtectionProvider dataProtectionProvider,
             [Service] IMongoCollection<User> users)
         {
+            maxUserId = (int)users.CountDocumentsAsync(new BsonDocument()).Result;
             AuthOptions = authOptions.Value;
             Users = users;
             TimeLimitedDataProtector = dataProtectionProvider
@@ -30,7 +32,7 @@ namespace RecipesBackend.Services.Auth
             var filter =  new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
             var user = Users.Find(filter).FirstOrDefault();
             if (user == null)
-                Users.InsertOne(new User { Email = input.Email, HashPassword = input.Email});
+                Users.InsertOne(new User(maxUserId++) { Email = input.Email, HashPassword = input.Email});
             else
                 throw new Exception(message: "user with such Email is already exists");
 
