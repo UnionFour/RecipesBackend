@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using RecipesBackend.DAL.ValueTypes;
 
 namespace RecipesBackend.DAL.Entities
 {

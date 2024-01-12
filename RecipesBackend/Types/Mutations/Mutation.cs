@@ -3,8 +3,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using RecipesBackend.DAL.Entities;
 
-using MongoDB.Driver;
-using RecipesBackend.DAL.Entities;
 using RecipesBackend.Services.Auth;
 
 namespace RecipesBackend.Types.Mutations;
@@ -19,6 +17,7 @@ public class Mutation
     public string AuthorizeUser(
         [Service] IAuthService authService,
         UserAuth input) => authService.AuthorizeUser(input);
+    
 	// TODO: Реализовать AddRecipe
 	// - Добавление рецепта, проверка на имя (если уже такое существует)
 	// -	- Добавление нового id
