@@ -70,6 +70,8 @@ builder.Services.AddSingleton(sp => database.GetCollection<Recipe>("Recipes"));
 builder.Services.AddSingleton(sp => database.GetCollection<IngredientCollection>("Ingredients"));
 builder.Services.AddSingleton(sp => database.GetCollection<User>("Users"));
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services
 	.AddGraphQLServer()
 	.AddAuthorization()

@@ -27,21 +27,22 @@ namespace RecipesBackend.Services.Auth
                 .ToTimeLimitedDataProtector();
         }
 
+        // TODO: хеширование пароля
         public string RegisterUser(UserAuth input)
         {
-            var filter = new BsonDocument { { "email", $"{input.Email}" }, { "passHash", $"{input.Password}" } };
+            var filter = new BsonDocument { { "email", $"{input.Email}" } };
             var user = Users.Find(filter).FirstOrDefault();
             if (user == null)
-                Users.InsertOne(new User(maxUserId++) { Email = input.Email, HashPassword = input.Email});
+                Users.InsertOne(new User { Email = input.Email, HashPassword = input.Password});
             else
                 throw new Exception(message: "user with such Email is already exists");
 
-            return AuthorizeUser(new UserAuth() { Email = input.Email, Password = input.Password });
+            return AuthorizeUser(new UserAuth { Email = input.Email, Password = input.Password });
         }
 
         public string AuthorizeUser(UserAuth input)
         {
-            var filter = new BsonDocument { { "email", $"{input.Email}" }, { "passHash", true } };
+            var filter = new BsonDocument { { "email", $"{input.Email}" } };
             var user = Users.Find(filter).FirstOrDefault();
 
             if (user == null) throw new Exception(message: "User is not registrated");
@@ -53,8 +54,7 @@ namespace RecipesBackend.Services.Auth
                 Claims = new Dictionary<string, object>
                 {
                     [JwtRegisteredClaimNames.Email] = input.Email,
-                    [JwtRegisteredClaimNames.CHash] = input.Password,
-                    [JwtRegisteredClaimNames.Sub] = user?.Id ?? throw new InvalidDataException()
+                    [JwtRegisteredClaimNames.Sub] = user.Id ?? throw new InvalidDataException()
                 },
                 Issuer = AuthOptions.Issuer,
                 Audience = AuthOptions.Audience,
