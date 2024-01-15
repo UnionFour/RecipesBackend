@@ -12,8 +12,8 @@ namespace RecipesBackend.DAL.Entities
         public string Email { get; set; }
         public string HashPassword { get; set; }
 
-        public List<int> LikedRecipes { get; set; }
-        public List<int> CreatedRecipes { get; set; }
+        public HashSet<string> LikedRecipes { get; set; } = new();
+        public List<int> CreatedRecipes { get; set; } = new();
 
         public bool IsAdmin { get; set; }
     }

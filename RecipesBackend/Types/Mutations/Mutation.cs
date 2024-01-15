@@ -1,3 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using HotChocolate.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -134,5 +137,24 @@ public class Mutation
 			});
 
 		return newIngredientName;
+	}
+
+	[Authorize]
+	public async Task<Recipe> AddFavouriteRecipe(
+		ClaimsPrincipal claimsPrincipal,
+		[FromServices] IMongoCollection<User> users,
+		[FromServices] IMongoCollection<Recipe> recipes,
+		string id)
+	{
+		var recipe = await recipes.Find(recipe => recipe.Id == id).FirstAsync();
+
+		var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
+		var user = await users.Find(u => u.Email == email).FirstAsync();
+
+		user.LikedRecipes.Add(id);
+
+		await users.UpdateOneAsync(user => user.Email == email, Builders<User>.Update.Set(user => user.LikedRecipes, user.LikedRecipes));
+
+		return recipe;
 	}
 }
