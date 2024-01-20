@@ -6,7 +6,7 @@ namespace RecipesBackend.DAL.ValueTypes
     [BsonIgnoreExtraElements]
     public class Instruction
     {
-        public LocalizedString? Name { get; set; } = new();
+        public LocalizedString Name { get; set; } = new();
         
         public List<Step> Steps { get; set; } = new();
     }

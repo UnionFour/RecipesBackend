@@ -28,7 +28,7 @@ namespace RecipesBackend.Services.Auth
         }
 
         // TODO: хеширование пароля
-        public string RegisterUser(UserAuth input)
+        public UserPayload RegisterUser(UserAuth input)
         {
             var filter = new BsonDocument { { "email", $"{input.Email}" } };
             var user = Users.Find(filter).FirstOrDefault();
@@ -40,7 +40,7 @@ namespace RecipesBackend.Services.Auth
             return AuthorizeUser(new UserAuth { Email = input.Email, Password = input.Password });
         }
 
-        public string AuthorizeUser(UserAuth input)
+        public UserPayload AuthorizeUser(UserAuth input)
         {
             var filter = new BsonDocument { { "email", $"{input.Email}" } };
             var user = Users.Find(filter).FirstOrDefault();
@@ -65,7 +65,12 @@ namespace RecipesBackend.Services.Auth
                     SecurityAlgorithms.HmacSha256)
             });
 
-            return accessToken;
+            return new UserPayload
+            {
+                Id = user.Id,
+                Login = user.Email,
+                Token = accessToken
+            };
         }
     }
 }

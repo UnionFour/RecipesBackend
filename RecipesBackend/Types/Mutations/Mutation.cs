@@ -13,11 +13,11 @@ namespace RecipesBackend.Types.Mutations;
 [MutationType]
 public class Mutation
 {
-	public string RegisterUser(
+	public UserPayload RegisterUser(
 		[Service] IAuthService authService,
 		UserAuth input) => authService.RegisterUser(input);
 
-	public string AuthorizeUser(
+	public UserPayload AuthorizeUser(
 		[Service] IAuthService authService,
 		UserAuth input) => authService.AuthorizeUser(input);
 

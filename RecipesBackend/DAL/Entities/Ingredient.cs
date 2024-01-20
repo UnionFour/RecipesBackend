@@ -11,7 +11,7 @@ namespace RecipesBackend.DAL.Entities
         public string? Id { get; set; }
 
         [BsonElement("nameClean")]
-		public LocalizedString? Name { get; set; } = new();
+		public LocalizedString Name { get; set; } = new();
 
 		// to get image "https://spoonacular.com/cdn/ingredients_100x100/" + image
 		public string? Image { get; set; } = "";

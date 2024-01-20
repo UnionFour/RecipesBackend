@@ -5,8 +5,8 @@ namespace RecipesBackend.Services.Auth
 {
     public interface IAuthService
     {
-        public string RegisterUser(UserAuth input);
+        public UserPayload RegisterUser(UserAuth input);
 
-        public string AuthorizeUser(UserAuth input);
+        public UserPayload AuthorizeUser(UserAuth input);
     }
 }
