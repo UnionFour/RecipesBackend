@@ -34,4 +34,4 @@ jobs:
         with:
           context: ./RecipesBackend/
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}}:dev
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
