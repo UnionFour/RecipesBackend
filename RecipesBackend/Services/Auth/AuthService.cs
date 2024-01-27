@@ -10,7 +10,6 @@ namespace RecipesBackend.Services.Auth
 {
     public class AuthService : IAuthService
     {
-        private int maxUserId;
         private AuthOptions AuthOptions { get; }
         private ITimeLimitedDataProtector TimeLimitedDataProtector { get; }
         private IMongoCollection<User> Users;
@@ -19,7 +18,6 @@ namespace RecipesBackend.Services.Auth
             IDataProtectionProvider dataProtectionProvider,
             [Service] IMongoCollection<User> users)
         {
-            maxUserId = (int)users.CountDocumentsAsync(new BsonDocument()).Result;
             AuthOptions = authOptions.Value;
             Users = users;
             TimeLimitedDataProtector = dataProtectionProvider
@@ -33,7 +31,7 @@ namespace RecipesBackend.Services.Auth
             var filter = new BsonDocument { { "email", $"{input.Email}" } };
             var user = Users.Find(filter).FirstOrDefault();
             if (user == null)
-                Users.InsertOne(new User { Email = input.Email, HashPassword = input.Password});
+                Users.InsertOne(new User { Email = input.Email, passHash = input.Password});
             else
                 throw new Exception(message: "user with such Email is already exists");
 
@@ -46,7 +44,7 @@ namespace RecipesBackend.Services.Auth
             var user = Users.Find(filter).FirstOrDefault();
 
             if (user == null) throw new Exception(message: "User is not registrated");
-            if (user.HashPassword != input.Password) throw new Exception(message: "wrong Password or Email");
+            if (user.passHash != input.Password) throw new Exception(message: "wrong Password or Email");
 
             var handler = new JsonWebTokenHandler();
             var accessToken = handler.CreateToken(new SecurityTokenDescriptor

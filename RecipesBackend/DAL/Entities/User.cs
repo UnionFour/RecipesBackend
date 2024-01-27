@@ -10,11 +10,13 @@ namespace RecipesBackend.DAL.Entities
         public new string? Id { get; set; }
 
         public string Email { get; set; }
-        public string HashPassword { get; set; }
+        public string passHash { get; set; }
+
+        public string UserName { get; set; }
 
         public HashSet<string> LikedRecipes { get; set; } = new();
         public List<int> CreatedRecipes { get; set; } = new();
 
-        public bool IsAdmin { get; set; }
+        public bool isSuper { get; set; }
     }
 }

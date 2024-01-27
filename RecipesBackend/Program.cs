@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using RecipesBackend;
 using RecipesBackend.DAL.Entities;
 using RecipesBackend.Services.Auth;
+using RecipesBackend.Services.Filter;
 
 var builder = WebApplication.CreateBuilder(args);
 
