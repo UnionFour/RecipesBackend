@@ -26,4 +26,50 @@
 Авторизация и регистрация реализованы с помощью JWT-токена через Bearer. Он позволяет настроить шифрование/время жизни и защиту пользовательских токенов.
 
 # Установка
-Для установки достаточно скачать архив проекта, распаковать его, и запустить с помощью IDE. После запуска, необходимо собрать(построить) приложение и перейти по выданному в консоли пути локального сервера, добавив в конце пути "/graphql". Тут, с помощью запросов GraphQL через контроллеры, можно обратиться к бд и сервисам приложения.
+Для установки достаточно скачать архив проекта, распаковать его, и запустить с помощью IDE. После запуска, необходимо собрать(построить) приложение и перейти по выданному в консоли пути локального сервера, добавив в конце пути "/graphql". Тут, с помощью запросов GraphQL через контроллеры, можно обратиться к бд и сервисам приложения. Так же есть сборка [образа](https://github.com/UnionFour/RecipesBackend/pkgs/container/recipesbackend).
+
+# Примеры запросов:
+### Получение рецептов
+```graphql
+query GetRecipes(
+  $filtration: RecipeFilterInput!
+  $recipeSorts: [RecipeSortInput!]
+) {
+  recipes(first: 10, where: $filtration, order: $recipeSorts) {
+    nodes {
+      ...RecipeInfo
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    totalCount
+  }
+}
+```
+
+### Авторизация
+```graphql
+mutation AuthorizeUser($input: AuthorizeUserInput!) {
+  authorizeUser(input: $input) {
+    userPayload {
+      id
+      login
+      token
+    }
+  }
+}
+```
+
+### Регистрация
+```graphql
+mutation RegisterUser {
+  registerUser(input: { input: { email: "some@mail.ru", password: "12345" } }) {
+    userPayload {
+      id
+      login
+      token
+    }
+  }
+}
+```
